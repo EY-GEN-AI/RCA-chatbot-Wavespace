@@ -52,8 +52,3 @@ Once the server is running, you can access:
 - ReDoc: http://localhost:8000/redoc
 
 
-in azure, this is hosted at the following link
-https://genai-rcav-1.calmrock-9a3c7962.centralindia.azurecontainerapps.io/chat
-
-
-the container apps name is genai-rcav-1
