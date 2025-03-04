@@ -470,94 +470,99 @@ async def generate_plan_summary_4(name_list): #(Avg Inventory next 3 months)
         print("Debug: Exception encountered:", e)
         return f"Error generating summary: {e}"
     
-
-
-async def generate_plan_summary_5(name_list): #PROD
-    # Parse the name_list parameter to determine which scenarios to include
-    selected_scenarios = []
-    if "all" in name_list:
-        selected_scenarios = list(scenarios_production_summary.keys())
-    else:
-        # Filter only valid scenarios from the list
-        selected_scenarios = [s for s in name_list if s in scenarios_production_summary]
+# answer_2 = generate_plan_summary_2()
     
 
-    if not selected_scenarios:
-        return "Error: No valid scenarios selected."
+
+
+
+
+# async def generate_plan_summary_5(name_list): #PROD
+#     # Parse the name_list parameter to determine which scenarios to include
+#     selected_scenarios = []
+#     if "all" in name_list:
+#         selected_scenarios = list(scenarios_production_summary.keys())
+#     else:
+#         # Filter only valid scenarios from the list
+#         selected_scenarios = [s for s in name_list if s in scenarios_production_summary]
     
-    # Build the scenario descriptions and file information only for selected scenarios
-    scenario_descriptions = []
-    file_info = []
+
+#     if not selected_scenarios:
+#         return "Error: No valid scenarios selected."
     
-    for scenario in selected_scenarios:
-        if scenario in scenarios_production_summary:
-            scenario_descriptions.append(f"- **{scenario}**: {scenarios_production_summary[scenario]['description']}")
-            file_info.append(f"{scenario} at path {scenarios_production_summary[scenario]['path']}")
+#     # Build the scenario descriptions and file information only for selected scenarios
+#     scenario_descriptions = []
+#     file_info = []
+    
+#     for scenario in selected_scenarios:
+#         if scenario in scenarios_production_summary:
+#             scenario_descriptions.append(f"- **{scenario}**: {scenarios_production_summary[scenario]['description']}")
+#             file_info.append(f"{scenario} at path {scenarios_production_summary[scenario]['path']}")
 
 
-    print('-'*80, '\n', file_info, '\n', '-'*80)
-    print('-'*80, '\n', scenario_descriptions, '\n', '-'*80)
+#     print('-'*80, '\n', file_info, '\n', '-'*80)
+#     print('-'*80, '\n', scenario_descriptions, '\n', '-'*80)
 
-    scenario_text = "\n".join(scenario_descriptions)
-    file_info_text = "\n            ".join(file_info)
+#     scenario_text = "\n".join(scenario_descriptions)
+#     file_info_text = "\n            ".join(file_info)
     
     
-    SINGLE_SUMMARY_PROMPT_3 = f"""
-            You are an Supply Chain Expert and Your task is to follow below steps and generate a textual summary, think Deeply and do following.
+#     SINGLE_SUMMARY_PROMPT_3 = f"""
+#             You are an Supply Chain Expert and Your task is to follow below steps and generate a textual summary, think Deeply and do following.
 
-            ⚠️ **STRICT RULES:**  
-            - Never include example formats or dummy values in your answer, always use provided data only
-            - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.
-            - STRICTLY WAIT FOR EACH STEP TO COMPLETE, do not jump to next till current one is completed
+#             ⚠️ **STRICT RULES:**  
+#             - Never include example formats or dummy values in your answer, always use provided data only
+#             - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.
+#             - STRICTLY WAIT FOR EACH STEP TO COMPLETE, do not jump to next till current one is completed
 
-            1) You have access to the following file(s):
-                {file_info_text}
+#             1) You have access to the following file(s):
+#                 {file_info_text}
 
-                STRICTLY Access those file/files and start forming report as below.
+#                 STRICTLY Access those file/files and start forming report as below.
 
 
-            Report:
-                Total Production for Next 3 Months (Do seperately for each selected Scenarios)
-                    Filter data where SUPPLYTYPE = 2
-                    Then Filter data for next 3 months only (column - SUPPLYAVAILDATE)
-                    Then Finally group by SUPPLYITEM and take sum on SUPPLYPEGQTY
-                    Give top 5 ITEM group, Qty in TABULAR FORMAT
+#             Report:
+#                 Total Production for Next 3 Months (Do seperately for each selected Scenarios)
+#                     Filter data where SUPPLYTYPE = 2
+#                     Then Filter data for next 3 months only (column - SUPPLYAVAILDATE)
+#                     Then Finally group by SUPPLYITEM and take sum on SUPPLYPEGQTY
+#                     Give top 5 ITEM group, Qty in TABULAR FORMAT
             
 
-                Keep it very detailed, use your knowledge and give in brief.
+#                 Keep it very detailed, use your knowledge and give in brief.
 
-                ***
+#                 ***
 
-                    ⚠️ **STRICT FINAL OUTPUT RULES:**  
-                        - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.  
-                        - **DO NOT OMIT ANY SECTION** from the final report.  
-                        - **Ensure every section follows the structure exactly as given.**
-                        - **Your final response MUST include only the human-readable report.**
-                        - **❌ DO NOT mention the prompt steps, instructions, or any meta-information like steps/code/column names, etc. **
-                ***
+#                     ⚠️ **STRICT FINAL OUTPUT RULES:**  
+#                         - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.  
+#                         - **DO NOT OMIT ANY SECTION** from the final report.  
+#                         - **Ensure every section follows the structure exactly as given.**
+#                         - **Your final response MUST include only the human-readable report.**
+#                         - **❌ DO NOT mention the prompt steps, instructions, or any meta-information like steps/code/column names, etc. **
+#                 ***
 
                 
-        """
+#         """
     
 
 
-    try:
-        ms=[]
-        interpreter.auto_run = True
-        # for chunk in interpreter.chat(CUSTOM_PROMPT, stream=True, display=False):
-        for chunk in interpreter.chat(SINGLE_SUMMARY_PROMPT_3, stream=True, display=False):
-            if chunk.get('type') in['message'] and chunk.get('role') in ['assistant']:
-                content = chunk.get('content')
-                if content:
-                    ms.append(str(content))
+#     try:
+#         ms=[]
+#         interpreter.auto_run = True
+#         # for chunk in interpreter.chat(CUSTOM_PROMPT, stream=True, display=False):
+#         for chunk in interpreter.chat(SINGLE_SUMMARY_PROMPT_3, stream=True, display=False):
+#             if chunk.get('type') in['message'] and chunk.get('role') in ['assistant']:
+#                 content = chunk.get('content')
+#                 if content:
+#                     ms.append(str(content))
         
-        output_message = "".join(ms)
-        print(output_message)
-        return output_message
+#         output_message = "".join(ms)
+#         print(output_message)
+#         return output_message
     
-    except Exception as e:
-        print("Debug: Exception encountered:", e)
-        return f"Error generating summary: {e}"
+#     except Exception as e:
+#         print("Debug: Exception encountered:", e)
+#         return f"Error generating summary: {e}"
     
 
 
