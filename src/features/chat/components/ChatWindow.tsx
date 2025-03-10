@@ -10,6 +10,7 @@ import UserAvatar from '../../../components/UserAvatar';
 import Tooltip from '../../../components/Tooltip';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
 import PlanSummaryModal from '../../chat/components/PlanSummaryModal';
+import RCAReportModal from '../../chat/components/RCAReport';
 
 // NEW CODE: Import the Asddf modal
 import Asddf from '../../../components/AskDF';
@@ -38,6 +39,7 @@ export default function ChatWindow({ initialSession }: ChatWindowProps) {
   const [originalMessageId, setOriginalMessageId] = useState<string | null>(null);
   const [dfQuestions, setDfQuestions] = useState<Message[]>([]); // New state to store DF-related messages
   const [isPlanSummaryModalOpen, setIsPlanSummaryModalOpen] = useState(false);
+  const [isRCAReportOpen, setIsRCAReportOpen] = useState(false);
 
 
 
@@ -80,6 +82,11 @@ export default function ChatWindow({ initialSession }: ChatWindowProps) {
   const handlePlanSummary = () => {
     setIsPlanSummaryModalOpen(true);
   };
+
+  const handleRCAReport = () => {
+    setIsRCAReportOpen(true);
+  };
+
   const handlePlanSummaryResponse = (summaryResponse) => {
     if (!currentSession || !summaryResponse) return;
 
@@ -403,6 +410,20 @@ export default function ChatWindow({ initialSession }: ChatWindowProps) {
               <>
                 <FileText className="w-5 h-5 mr-2" />
                 <span>Plan Summary</span>
+              </>
+            ) : (
+              < FileText className="w-5 h-5" />
+            )}
+          </button>
+
+          <button
+            onClick={handleRCAReport}
+            className="flex items-center justify-center w-full px-4 py-3 rounded-lg bg-primary text-secondary-dark hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-light-glow hover:shadow-xl group"
+          >
+            {isSidebarOpen ? (
+              <>
+                <FileText className="w-5 h-5 mr-2" />
+                <span>RCA Report</span>
               </>
             ) : (
               < FileText className="w-5 h-5" />
@@ -896,8 +917,11 @@ export default function ChatWindow({ initialSession }: ChatWindowProps) {
           onSummaryReceived={handlePlanSummaryResponse}
         />
 
-
-
+      <RCAReportModal
+          isOpen={isRCAReportOpen}
+          onClose={() => setIsRCAReportOpen(false)}
+          // onSummaryReceived={handlePlanSummaryResponse}
+        />
 
     </div>
   );

@@ -176,7 +176,7 @@ class SahdevBase(ABC):
 
 
 
-    def execute_query_with_retries(self, question: str,context_str:str, max_retries: int = 3) -> Tuple[Optional[str], Optional[pd.DataFrame], str]:
+    def execute_query_with_retries(self, question: str,context_str:str, max_retries: int = 1) -> Tuple[Optional[str], Optional[pd.DataFrame], str]:
         """
         Attempts to generate and execute an SQL query for the given question with retry logic.
         Returns the SQL query, result DataFrame, and a message.

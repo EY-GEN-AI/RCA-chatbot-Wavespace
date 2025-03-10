@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 from backend.models.chat import ChatMessage, ChatResponse, ChatSession
 from backend.services.generate_plan_summary import generate_plan_summary
+from backend.services.module_rca_summary import generate_rca_report
 from backend.services.chat import ChatService
 from backend.core.security import get_current_user
 # from backend.services.auth import get_current_user
@@ -22,25 +23,22 @@ class SimilarQuestionRequest(BaseModel):
 
 class ModuleFiles(BaseModel):
     module: str
-    filename: List[str] 
+    filename: List[str]
+
+class ModuleRequest(BaseModel):
+    module_selected: str
+
 
 from fastapi import APIRouter, Depends
 
-# @router.get("/persona")
-# async def some_endpoint(persona: str = Depends(get_current_persona)):
-#     # You now have the dynamic persona string
-#     return {"message": f"Your persona is {persona}"}
 
-# @router.get("/planSummary")
-# async def module_summary(module:str):
-#     return await generate_plan_summary(module)
-# @router.get("/planSummary")
-# async def module_summary(module: str):
-#     return await generate_plan_summary(module)
+@router.post("/RCAModuleSummary")
+async def module_summary(request: ModuleRequest):
+    return await generate_rca_report(request.module_selected)
 
 @router.post("/planSummary")
 async def module_summary(module_files: ModuleFiles):
-    return await generate_plan_summary(module_files.model_dump()) 
+    return await generate_plan_summary(module_files.model_dump())
 
 # @router.post("/sessions", response_model=ChatSession)
 # async def create_session(current_user: dict = Depends(get_current_user)):

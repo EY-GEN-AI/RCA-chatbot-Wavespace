@@ -8,7 +8,9 @@ interpreter.custom_instructions = "If anyone asks you who made you then keep  in
 interpreter.auto_run = True
 
 
-docs_path="backend\docs"
+#docs_path="backend\docs"
+docs_path="..\docs"
+
 
 #docs_path = r"C:\Users\EQ363EQ\Downloads\ESP_Reports_Output_Tables"
 
@@ -60,15 +62,15 @@ scenarios_supply_summary = {
 scenarios_production_summary = {
     "MONTHLY_BASE": {
         "description": "A balanced approach, avoiding extreme fluctuations.",
-        "path": docs_path + r"\20250223023726_MONTHLY_BASE_OUT_INDDMDLINK_ESP.csv"
+        "path": docs_path + r"\MB_PLANORDER_ESP.csv"
     },
     "MONTHLY_DEM_SAT": {
         "description": "Prioritize meeting demand, ensuring high service levels.",
-        "path": docs_path + r"\20250223023757_MONTHLY_MAX_DEMSAT_OUT_INDDMDLINK_ESP.csv"
+        "path": docs_path + r"\MMD_PLANORDER_ESP.csv"
     },
     "MONTHLY_MAX_PROFIT": {
         "description": "Maximize profit while potentially reducing demand fulfillment.",
-        "path": docs_path + r"\20250223023651_MONTHLY_MAX_PROFIT_OUT_INDDMDLINK_ESP.csv"
+        "path": docs_path + r"\MMP_PLANORDER_ESP.csv"
     }
 }
 
@@ -87,9 +89,46 @@ scenarios_res_util_summary = {
     }
 }
 
+planarriv_summary={
+
+     "MONTHLY_BASE": {
+        "description": "A balanced approach, avoiding extreme fluctuations.",
+        "path": docs_path + r"\MB_PLANARRIV_ESP.csv"
+    },
+    "MONTHLY_DEM_SAT": {
+        "description": "Prioritize meeting demand, ensuring high service levels.",
+        "path": docs_path + r"\MMD_PLANARRIV_ESP.csv"
+    },
+    "MONTHLY_MAX_PROFIT": {
+        "description": "Maximize profit while potentially reducing demand fulfillment.",
+        "path": docs_path + r"\MMP_PLANARRIV_ESP.csv"
+    }
+
+}
+
+projected_oh_summary={
+
+     "MONTHLY_BASE": {
+        "description": "A balanced approach, avoiding extreme fluctuations.",
+        "path": docs_path + r"\MB_PROJECTED_OH_ESP.csv"
+    },
+    "MONTHLY_DEM_SAT": {
+        "description": "Prioritize meeting demand, ensuring high service levels.",
+        "path": docs_path + r"\MMD_PROJECTED_OH_ESP.csv"
+    },
+    "MONTHLY_MAX_PROFIT": {
+        "description": "Maximize profit while potentially reducing demand fulfillment.",
+        "path": docs_path + r"\MMP_PROJECTED_OH_ESP.csv"
+    }
+
+}
+
+
+
 
 async def generate_plan_summary_1(name_list):
     # Parse the name_list parameter to determine which scenarios to include
+    print("Generating Summary")
     selected_scenarios = []
     if "all" in name_list:
         selected_scenarios = list(scenarios.keys())
@@ -170,7 +209,9 @@ async def generate_plan_summary_1(name_list):
                     ms.append(str(content))
         
         output_message = "".join(ms)
-        print(output_message)
+        print("Generating Summary 1")
+
+        #print(output_message)
         return output_message
     
     except Exception as e:
@@ -270,7 +311,9 @@ async def generate_plan_summary_2(name_list):
                     ms.append(str(content))
         
         output_message = "".join(ms)
-        print(output_message)
+       # print(output_message)
+        print("Generating Summary 2")
+
         return output_message
     
     except Exception as e:
@@ -302,8 +345,8 @@ async def generate_plan_summary_3(name_list): #(Large Bulk orders, Total order b
             file_info.append(f"{scenario} at path {scenarios_order_summary[scenario]['path']}")
 
 
-    print('-'*80, '\n', file_info, '\n', '-'*80)
-    print('-'*80, '\n', scenario_descriptions, '\n', '-'*80)
+    #print('-'*80, '\n', file_info, '\n', '-'*80)
+    #print('-'*80, '\n', scenario_descriptions, '\n', '-'*80)
 
     scenario_text = "\n".join(scenario_descriptions)
     file_info_text = "\n            ".join(file_info)
@@ -361,7 +404,9 @@ async def generate_plan_summary_3(name_list): #(Large Bulk orders, Total order b
                     ms.append(str(content))
         
         output_message = "".join(ms)
-        print(output_message)
+        #print(output_message)
+        print("Generating Summary 3")
+
         return output_message
     
     except Exception as e:
@@ -398,13 +443,13 @@ async def generate_plan_summary_4(name_list): #(Avg Inventory next 3 months)
             # file_info.append(f"{scenario} Production data at path {scenarios_supply_summary[scenario]['production_path']}")
 
 
-    print('-'*80, '\n', file_info, '\n', '-'*80)
-    print('-'*80, '\n', scenario_descriptions, '\n', '-'*80)
+    #print('-'*80, '\n', file_info, '\n', '-'*80)
+    #print('-'*80, '\n', scenario_descriptions, '\n', '-'*80)
 
     scenario_text = "\n".join(scenario_descriptions)
     file_info_text = "\n            ".join(file_info)
     
-    print('-'*80, '\n File Info text', file_info_text, '\n', '-'*80)
+    #print('-'*80, '\n File Info text', file_info_text, '\n', '-'*80)
 
     
     SINGLE_SUMMARY_PROMPT_4 = f"""
@@ -463,7 +508,9 @@ async def generate_plan_summary_4(name_list): #(Avg Inventory next 3 months)
                     ms.append(str(content))
         
         output_message = "".join(ms)
-        print(output_message)
+        #print(output_message)
+        print("Generating Summary 4")
+
         return output_message
     
     except Exception as e:
@@ -472,16 +519,106 @@ async def generate_plan_summary_4(name_list): #(Avg Inventory next 3 months)
     
 
 
-async def generate_plan_summary_5(name_list): #PROD
-    # Parse the name_list parameter to determine which scenarios to include
-    selected_scenarios = []
-    if "all" in name_list:
-        selected_scenarios = list(scenarios_production_summary.keys())
-    else:
-        # Filter only valid scenarios from the list
-        selected_scenarios = [s for s in name_list if s in scenarios_production_summary]
+# async def generate_plan_summary_5(name_list): #PROD
+#     # Parse the name_list parameter to determine which scenarios to include
+#     selected_scenarios = []
+#     if "all" in name_list:
+#         selected_scenarios = list(scenarios_production_summary.keys())
+#     else:
+#         # Filter only valid scenarios from the list
+#         selected_scenarios = [s for s in name_list if s in scenarios_production_summary]
     
 
+#     if not selected_scenarios:
+#         return "Error: No valid scenarios selected."
+    
+#     # Build the scenario descriptions and file information only for selected scenarios
+#     scenario_descriptions = []
+#     file_info = []
+    
+#     for scenario in selected_scenarios:
+#         if scenario in scenarios_production_summary:
+#             scenario_descriptions.append(f"- **{scenario}**: {scenarios_production_summary[scenario]['description']}")
+#             file_info.append(f"{scenario} at path {scenarios_production_summary[scenario]['path']}")
+
+
+#     #print('-'*80, '\n', file_info, '\n', '-'*80)
+#     #print('-'*80, '\n', scenario_descriptions, '\n', '-'*80)
+
+#     scenario_text = "\n".join(scenario_descriptions)
+#     file_info_text = "\n            ".join(file_info)
+    
+    
+#     SINGLE_SUMMARY_PROMPT_3 = f"""
+#             You are an Supply Chain Expert and Your task is to follow below steps and generate a textual summary, think Deeply and do following.
+
+#             ⚠️ **STRICT RULES:**  
+#             - Never include example formats or dummy values in your answer, always use provided data only
+#             - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.
+#             - STRICTLY WAIT FOR EACH STEP TO COMPLETE, do not jump to next till current one is completed
+
+#             1) You have access to the following file(s):
+#                 {file_info_text}
+
+#                 STRICTLY Access those file/files and start forming report as below.
+
+
+#             Report:
+#                 Total Production for Next 3 Months (Do seperately for each selected Scenarios)
+#                     Filter data where SUPPLYTYPE = 2
+#                     Then Filter data for next 3 months only (column - SUPPLYAVAILDATE)
+#                     Then Finally group by SUPPLYITEM and take sum on SUPPLYPEGQTY
+#                     Give top 5 ITEM group, Qty in TABULAR FORMAT
+            
+
+#                 Keep it very detailed, use your knowledge and give in brief.
+
+#                 ***
+
+#                     ⚠️ **STRICT FINAL OUTPUT RULES:**  
+#                         - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.  
+#                         - **DO NOT OMIT ANY SECTION** from the final report.  
+#                         - **Ensure every section follows the structure exactly as given.**
+#                         - **Your final response MUST include only the human-readable report.**
+#                         - **❌ DO NOT mention the prompt steps, instructions, or any meta-information like steps/code/column names, etc. **
+#                 ***
+
+                
+#         """
+    
+
+
+#     try:
+#         ms=[]
+#         interpreter.auto_run = True
+#         # for chunk in interpreter.chat(CUSTOM_PROMPT, stream=True, display=False):
+#         for chunk in interpreter.chat(SINGLE_SUMMARY_PROMPT_3, stream=True, display=False):
+#             if chunk.get('type') in['message'] and chunk.get('role') in ['assistant']:
+#                 content = chunk.get('content')
+#                 if content:
+#                     ms.append(str(content))
+        
+#         output_message = "".join(ms)
+#        # print(output_message)
+#         print("Generating Summary 5")
+
+#         return output_message
+    
+#     except Exception as e:
+#         print("Debug: Exception encountered:", e)
+#         return f"Error generating summary: {e}"
+    
+
+async def generate_plan_summary_5(name_list):  # Total projected  Production for Next 3 Months
+    # Parse the name_list parameter to determine which scenarios to include
+    print("Generate Summary 5 (Total projected  Production for Next 3 Months)")
+    selected_scenarios = []
+    if "all" in name_list:
+        selected_scenarios = list(projected_oh_summary.keys())
+    else:
+        # Filter only valid scenarios from the list
+        selected_scenarios = [s for s in name_list if s in projected_oh_summary]
+    
     if not selected_scenarios:
         return "Error: No valid scenarios selected."
     
@@ -490,75 +627,88 @@ async def generate_plan_summary_5(name_list): #PROD
     file_info = []
     
     for scenario in selected_scenarios:
-        if scenario in scenarios_production_summary:
-            scenario_descriptions.append(f"- **{scenario}**: {scenarios_production_summary[scenario]['description']}")
-            file_info.append(f"{scenario} at path {scenarios_production_summary[scenario]['path']}")
-
-
-    print('-'*80, '\n', file_info, '\n', '-'*80)
-    print('-'*80, '\n', scenario_descriptions, '\n', '-'*80)
+        if scenario in projected_oh_summary:
+            scenario_descriptions.append(f"- **{scenario}**: {projected_oh_summary[scenario]['description']}")
+            file_info.append(f"{scenario} at path {projected_oh_summary[scenario]['path']}")
 
     scenario_text = "\n".join(scenario_descriptions)
     file_info_text = "\n            ".join(file_info)
     
     
-    SINGLE_SUMMARY_PROMPT_3 = f"""
-            You are an Supply Chain Expert and Your task is to follow below steps and generate a textual summary, think Deeply and do following.
+    SINGLE_SUMMARY_PROMPT_5 = f"""
+            You are a Supply Chain Analytics Expert. Generate a detailed production performance summary using these steps:
 
-            ⚠️ **STRICT RULES:**  
-            - Never include example formats or dummy values in your answer, always use provided data only
-            - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.
-            - STRICTLY WAIT FOR EACH STEP TO COMPLETE, do not jump to next till current one is completed
+           ⚠️ **STRICT RULES:**  
+        - DO NOT print anything to the browser, every result must be printed in the terminal.
+        - ALWAYS Follow the structure of report given below.
+        - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.
+        - STRICTLY WAIT FOR EACH STEP TO COMPLETE, do not jump to next till current one is completed
 
-            1) You have access to the following file(s):
+        Select ONLY {", ".join(selected_scenarios)} those file/files and start forming report as below.
+
+
+            1) Access these files:
                 {file_info_text}
 
-                STRICTLY Access those file/files and start forming report as below.
+            2) Report (EXPLAIN ONLY SELECTED SCENARIOS {", ".join(selected_scenarios)}):
+            For each scenario, make a seperate table, with the scenario name at the top followed by the table .
 
+            To make a table follow the below instructions:
+            1) First
+                - Sort by "Grand Total" column in descending order
+                - Select top 5 records from the Sorted list of records
+                - Generate markdown table with columns: udc_product_grp, Feb, Mar, Apr, May, Grand Total
 
-            Report:
-                Total Production for Next 3 Months (Do seperately for each selected Scenarios)
-                    Filter data where SUPPLYTYPE = 2
-                    Then Filter data for next 3 months only (column - SUPPLYAVAILDATE)
-                    Then Finally group by SUPPLYITEM and take sum on SUPPLYPEGQTY
-                    Give top 5 ITEM group, Qty in TABULAR FORMAT
-            
+            2) Provide detailed insights for each Product Group:
+                - Analyze product group performance hierarchy
+                - Identify monthly production trends (e.g., "Apr shows peak production for HR")
+                - Note any zero-value months for key products (e.g., "MGP shows 0 production in Feb")
+                - Compare product group contributions (e.g., "SLAB accounts for 45% of 1001's total")
+                - Highlight anomalies and patterns
 
-                Keep it very detailed, use your knowledge and give in brief.
+            3) Final output structure:
+                # Total projected Production for Next 3 Months 
+                # Scenario name :
+                [Markdown table]
+                **Insights**: 
+                - [Detailed observation 1]
+                - [Detailed observation 2]
+                - [Trend analysis]
+
+                # Scenario name :
+                [Markdown table]
+                **Insights**: 
+                - [Detailed observation 1]
+                - [Seasonal pattern]
+                - [Comparative analysis]
 
                 ***
 
-                    ⚠️ **STRICT FINAL OUTPUT RULES:**  
-                        - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.  
-                        - **DO NOT OMIT ANY SECTION** from the final report.  
-                        - **Ensure every section follows the structure exactly as given.**
-                        - **Your final response MUST include only the human-readable report.**
-                        - **❌ DO NOT mention the prompt steps, instructions, or any meta-information like steps/code/column names, etc. **
+                ⚠️ **STRICT FINAL OUTPUT RULES:**  
+                - **ONLY** markdown tables and bullet-point insights
+                - **NO** code blocks, formatting beyond markdown, or meta-information
+                - **ENSURE** insights contain numerical analysis and comparative metrics
                 ***
-
-                
         """
-    
-
 
     try:
-        ms=[]
+        ms = []
         interpreter.auto_run = True
-        # for chunk in interpreter.chat(CUSTOM_PROMPT, stream=True, display=False):
-        for chunk in interpreter.chat(SINGLE_SUMMARY_PROMPT_3, stream=True, display=False):
-            if chunk.get('type') in['message'] and chunk.get('role') in ['assistant']:
+        for chunk in interpreter.chat(SINGLE_SUMMARY_PROMPT_5, stream=True, display=False):
+            if chunk.get('type') == 'message' and chunk.get('role') == 'assistant':
                 content = chunk.get('content')
                 if content:
                     ms.append(str(content))
         
         output_message = "".join(ms)
-        print(output_message)
+        print("Generating Summary 8")
         return output_message
     
     except Exception as e:
         print("Debug: Exception encountered:", e)
         return f"Error generating summary: {e}"
     
+
 
 
 
@@ -586,8 +736,8 @@ async def generate_plan_summary_6(name_list): #RES UTILISATION
             file_info.append(f"{scenario} at path {scenarios_res_util_summary[scenario]['path']}")
 
 
-    print('-'*80, '\n', file_info, '\n', '-'*80)
-    print('-'*80, '\n', scenario_descriptions, '\n', '-'*80)
+   # print('-'*80, '\n', file_info, '\n', '-'*80)
+    #print('-'*80, '\n', scenario_descriptions, '\n', '-'*80)
 
     scenario_text = "\n".join(scenario_descriptions)
     file_info_text = "\n            ".join(file_info)
@@ -630,6 +780,8 @@ async def generate_plan_summary_6(name_list): #RES UTILISATION
         """
     
 
+    
+
 
     try:
         ms=[]
@@ -642,7 +794,9 @@ async def generate_plan_summary_6(name_list): #RES UTILISATION
                     ms.append(str(content))
         
         output_message = "".join(ms)
-        print(output_message)
+        #print(output_message)
+        print("Generating Summary 6")
+
         return output_message
     
     except Exception as e:
@@ -650,31 +804,230 @@ async def generate_plan_summary_6(name_list): #RES UTILISATION
         return f"Error generating summary: {e}"
     
 
+async def generate_plan_summary_7(name_list):  # PLAN ARRIVAL SUMMARY
+    # Parse the name_list parameter to determine which scenarios to include
+    print("Generating Summary 7 (Plan Arriv Summary)")
+    selected_scenarios = []
+    if "all" in name_list:
+        selected_scenarios = list(planarriv_summary.keys())
+    else:
+        # Filter only valid scenarios from the list
+        selected_scenarios = [s for s in name_list if s in planarriv_summary]
+    
+    if not selected_scenarios:
+        return "Error: No valid scenarios selected."
+    
+    # Build the scenario descriptions and file information only for selected scenarios
+    scenario_descriptions = []
+    file_info = []
+    
+    for scenario in selected_scenarios:
+        if scenario in planarriv_summary:
+            scenario_descriptions.append(f"- **{scenario}**: {planarriv_summary[scenario]['description']}")
+            file_info.append(f"{scenario} at path {planarriv_summary[scenario]['path']}")
+
+    scenario_text = "\n".join(scenario_descriptions)
+    file_info_text = "\n            ".join(file_info)
+    
+    SINGLE_SUMMARY_PROMPT_4 = f"""
+            You are a Supply Chain Expert. Generate a detailed summary using the following steps:
+
+            ⚠️ **STRICT RULES:**  
+            - Never include example formats or dummy values in your answer, always use provided data only
+            - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.
+            - STRICTLY WAIT FOR EACH STEP TO COMPLETE, do not jump to next till current one is completed
+
+            1) Access these files:
+                {file_info_text}
+
+            2) For each plant (Dolvi, VJNR, VTK) in the data:
+                -Plant name is present in "plantname" column
+                - Sort items by "Grand Total" column in descending order
+                - Select top 5 rows with non-zero values
+                - Generate markdown table with columns: ITEM Name, Karnataka, Maharashtra, North, South, Grand Total
+
+            3) Provide brief insights for each plant:
+                - Highlight top performing items
+                - Note regional distribution patterns
+                - Mention any significant observations
+
+            4) Final output must be in this structure:
+                # Plant Arrival Summary
+                ## [Plant Name]
+                [Markdown table]
+                **Insights**: [Brief analysis]
+
+                ## [Next Plant Name]
+                [Markdown table]
+                **Insights**: [Brief analysis]
+
+                ***
+
+                ⚠️ **STRICT FINAL OUTPUT RULES:**  
+                - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths
+                - **ONLY** markdown tables and plain text insights
+                - **NO** code blocks or formatting beyond markdown
+                ***
+        """
+
+    try:
+        ms = []
+        interpreter.auto_run = True
+        for chunk in interpreter.chat(SINGLE_SUMMARY_PROMPT_4, stream=True, display=False):
+            if chunk.get('type') == 'message' and chunk.get('role') == 'assistant':
+                content = chunk.get('content')
+                if content:
+                    ms.append(str(content))
+        
+        output_message = "".join(ms)
+        print("Generating Summary 7")
+        return output_message
+    
+    except Exception as e:
+        print("Debug: Exception encountered:", e)
+        return f"Error generating summary: {e}"
+    
+
+async def generate_plan_summary_8(name_list):  #Average inventory for next 3 months
+    # Parse the name_list parameter to determine which scenarios to include
+    print("Generate Summary 8 (Average inventory for next 3 months)")
+    selected_scenarios = []
+    if "all" in name_list:
+        selected_scenarios = list(projected_oh_summary.keys())
+    else:
+        # Filter only valid scenarios from the list
+        selected_scenarios = [s for s in name_list if s in projected_oh_summary]
+    
+    if not selected_scenarios:
+        return "Error: No valid scenarios selected."
+    
+    # Build the scenario descriptions and file information only for selected scenarios
+    scenario_descriptions = []
+    file_info = []
+    
+    for scenario in selected_scenarios:
+        if scenario in projected_oh_summary:
+            scenario_descriptions.append(f"- **{scenario}**: {projected_oh_summary[scenario]['description']}")
+            file_info.append(f"{scenario} at path {projected_oh_summary[scenario]['path']}")
+
+    scenario_text = "\n".join(scenario_descriptions)
+    file_info_text = "\n            ".join(file_info)
+    
+    
+    SINGLE_SUMMARY_PROMPT_5 = f"""
+            You are a Supply Chain Analytics Expert. Generate a detailed production performance summary using these steps:
+
+           ⚠️ **STRICT RULES:**  
+        - DO NOT print anything to the browser, every result must be printed in the terminal.
+        - ALWAYS Follow the structure of report given below.
+        - **DO NOT INCLUDE:** Steps, instructions, prompts, meta-information, or file paths in the response.
+        - STRICTLY WAIT FOR EACH STEP TO COMPLETE, do not jump to next till current one is completed
+
+        Select ONLY {", ".join(selected_scenarios)} those file/files and start forming report as below.
+
+
+            1) Access these files:
+                {file_info_text}
+
+            2) Report (EXPLAIN ONLY SELECTED SCENARIOS {", ".join(selected_scenarios)}):
+            For each scenario, make a seperate table, with the scenario name at the top followed by the table .
+
+            To make a table follow the below instructions:
+
+            2) For each location (1001,1007) in the data:
+                - Sort by "Grand Total" column in descending order
+                - Select top 5 entries
+                - Generate markdown table with columns: udc_product_grp, Feb, Mar, Apr, May, Jun, Grand Total
+
+            3) Provide detailed insights for each location:
+                - Analyze product group performance hierarchy
+                - Identify monthly production trends (e.g., "Apr shows peak production for HR")
+                - Note any zero-value months for key products (e.g., "MGP shows 0 production in Feb")
+                - Compare product group contributions (e.g., "SLAB accounts for 45% of 1001's total")
+                - Highlight anomalies and patterns
+
+            4) Final output structure:
+                # Average Inventory for next months  
+                # Scenario name :
+                ## Location [LOC]
+                [Markdown table]
+                **Insights**: 
+                - [Detailed observation 1]
+                - [Detailed observation 2]
+                - [Trend analysis]
+
+                ## Location [Next LOC]
+                [Markdown table]
+                **Insights**: 
+                - [Detailed observation 1]
+                - [Seasonal pattern]
+                - [Comparative analysis]
+
+                ***
+
+                ⚠️ **STRICT FINAL OUTPUT RULES:**  
+                - **ONLY** markdown tables and bullet-point insights
+                - **NO** code blocks, formatting beyond markdown, or meta-information
+                - **ENSURE** insights contain numerical analysis and comparative metrics
+                ***
+        """
+
+    try:
+        ms = []
+        interpreter.auto_run = True
+        for chunk in interpreter.chat(SINGLE_SUMMARY_PROMPT_5, stream=True, display=False):
+            if chunk.get('type') == 'message' and chunk.get('role') == 'assistant':
+                content = chunk.get('content')
+                if content:
+                    ms.append(str(content))
+        
+        output_message = "".join(ms)
+        print("Generating Summary 8")
+        return output_message
+    
+    except Exception as e:
+        print("Debug: Exception encountered:", e)
+        return f"Error generating summary: {e}"
+
+
 
 
 
 async def generate_plan_summary(module_files:dict):
     input_scenarios=module_files["filename"]
     print(input_scenarios)
-    #input_scenarios = [ 'MONTHLY_DEM_SAT', 'MONTHLY_BASE', 'MONTHLY_MAX_PROFIT']
-    answer_1 = await generate_plan_summary_1(input_scenarios)
-    answer_2 = await generate_plan_summary_2(input_scenarios)
+   # input_scenarios = [ 'MONTHLY_DEM_SAT', 'MONTHLY_BASE', 'MONTHLY_MAX_PROFIT']
+    input_scenarios = [ 'MONTHLY_DEM_SAT', 'MONTHLY_BASE', 'MONTHLY_MAX_PROFIT']
+
+    # answer_1 = await generate_plan_summary_1(input_scenarios)
+    # answer_2 = await generate_plan_summary_2(input_scenarios)
     answer_3 = await generate_plan_summary_3(input_scenarios)
-    answer_4 = await generate_plan_summary_4(input_scenarios)
-    # answer_5 = generate_plan_summary_5(input_scenarios)
-    answer_6 = await generate_plan_summary_6(input_scenarios)
-    final_answer = answer_1 + "\n\n" + answer_2 + "\n\n" + answer_3 + "\n\n" + answer_4 + "\n\n" + answer_6
+    # answer_4 = await generate_plan_summary_4(input_scenarios)
+    # answer_5 = await generate_plan_summary_5(input_scenarios)
+    # answer_6 = await generate_plan_summary_6(input_scenarios)
+    # answer_7 = await generate_plan_summary_7(input_scenarios)
+    #answer_8 = await generate_plan_summary_8(input_scenarios)
+    #answer_9= await generate_plan_summary_9(input_scenarios)
+    #final_answer = answer_1 + "\n\n" + answer_2 + "\n\n" + answer_3 + "\n\n" + answer_4 + "\n\n" +answer_5 +"\n\n" + answer_6 + answer_7 + "\n\n" + answer_8 + "\n\n"
+    final_answer=answer_3
     return {"summary": final_answer}
 
 
+# sample_dict = {
+#     "module":"ESP",
+#     "filename": ['MONTHLY_DEM_SAT', 'MONTHLY_BASE', 'MONTHLY_MAX_PROFIT']
+# }
 
-#final_summary = asyncio.run(generate_plan_summary(sample_dict))
-#a = generate_plan_summary(sample_dict)
-#print(a)
+# final_summary = asyncio.run(generate_plan_summary(sample_dict))
+# print(final_summary["summary"])
 
-# summary_path = r"C:\DJ\Udemy\Gen_AI\OpenInterpreter\split_summary_report6.txt"
+
+
+
+
+# summary_path = r"sample.txt"
 # with open(summary_path, "w", encoding="utf-8") as file:  # Use "a" instead of "w"
 #     # file.write("\n\n")  # Add some spacing before appending new content
-#     file.write(a)
+#     file.write(final_summary["summary"])
 # print("Report appended successfully")
 

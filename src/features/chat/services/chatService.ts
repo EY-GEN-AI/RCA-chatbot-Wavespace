@@ -53,6 +53,18 @@ export class ChatService {
       throw new Error(error.response?.data?.detail || 'Failed to get Plan summary');
     }
   }
+
+  static async createRCAModuleSummary(moduleSelected: string): Promise<any> {
+    try {
+      const response = await api.post('/chat/RCAModuleSummary', {
+        module_selected: moduleSelected // Match Postman's parameter name
+      });
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response?.data?.detail || 'Failed to get RCA report');
+    }
+  }
+  
   
 
   static async getSessionMessages(sessionId: string): Promise<Message[]> {

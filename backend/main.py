@@ -88,7 +88,7 @@ os.makedirs(static_path, exist_ok=True)
 
 
 #### Main Line to be uncommented to run on Different ports ######
-app.mount("/assets", StaticFiles(directory=os.path.join(static_path, "assets"),html=True), name="assets")
+#app.mount("/assets", StaticFiles(directory=os.path.join(static_path, "assets"),html=True), name="assets")
 
 
 @app.get("/{full_path:path}")

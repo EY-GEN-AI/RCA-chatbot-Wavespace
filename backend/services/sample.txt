@@ -1,0 +1,37 @@
+The files are loaded successfully. Let's proceed to analyze and create the Ordered Summary for each scenario based on the instructions provided. I will start by calculating the Large Bulk Orders for each scenario.### Large Bulk Orders
+
+Scenario: **MONTHLY DEM SAT**
+- HR_STR_3.40-25.4_1281-1550: 55,799.89
+- HR_LC_2.50-3.39_1101-1280: 49,209.74
+- HRCTL_STR_3.40-25.4_1551-2020: 34,883.73
+
+Scenario: **MONTHLY BASE**
+- HR_STR_3.40-25.4_1281-1550: 55,799.89
+- HR_LC_2.50-3.39_1101-1280: 49,209.74
+- HRCTL_STR_3.40-25.4_1551-2020: 34,883.73
+
+Scenario: **MONTHLY MAX PROFIT**
+- HR_STR_3.40-25.4_1281-1550: 55,799.89
+- HR_LC_2.50-3.39_1101-1280: 49,209.74
+- HRCTL_STR_3.40-25.4_1551-2020: 34,883.73
+
+---
+
+Next, I will calculate the "Total Orders by Top Customers" for each scenario.### Total Orders by Top Customers
+
+Scenario: **MONTHLY DEM SAT**
+- OE_KA01_APL APOLLO GROUP Cor | HR_LC_2.50-3.39_1101-1280: 24,749.57
+- OE_AP01_KIRBY BUILDING SYSTEMS GROUP Cor | HRCTL_HTSTR_3.40-25.4_1551-2020: 10,491.10
+- PRY_OE_WEST_Mumbai HO | HR_STR_3.40-25.4_1551-2020: 10,469.97
+
+Scenario: **MONTHLY BASE**
+- OE_KA01_APL APOLLO GROUP Cor | HR_LC_2.50-3.39_1101-1280: 24,749.57
+- OE_AP01_KIRBY BUILDING SYSTEMS GROUP Cor | HRCTL_HTSTR_3.40-25.4_1551-2020: 10,491.10
+- PRY_OE_WEST_Mumbai HO | HR_STR_3.40-25.4_1551-2020: 10,469.97
+
+Scenario: **MONTHLY MAX PROFIT**
+- OE_KA01_APL APOLLO GROUP Cor | HR_LC_2.50-3.39_1101-1280: 24,749.57
+- OE_AP01_KIRBY BUILDING SYSTEMS GROUP Cor | HRCTL_HTSTR_3.40-25.4_1551-2020: 10,491.10
+- PRY_OE_WEST_Mumbai HO | HR_STR_3.40-25.4_1551-2020: 10,469.97
+
+This completes the report in all required sections with specific data for each scenario.

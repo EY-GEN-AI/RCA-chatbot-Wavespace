@@ -32,7 +32,8 @@ cache = Cache(cache_dir,size_limit=int(1e12),eviction_policy="none")
 
 class AIService:
     _instance = None
-    _executor = ThreadPoolExecutor(max_workers=10)
+    #_executor = ThreadPoolExecutor(max_workers=10)
+    _executor = ThreadPoolExecutor(max_workers=min(32, (os.cpu_count() or 1) * 4 + 4))  # More dynamic sizing)
     _active_sessions = {} 
 
     def __init__(self):
@@ -72,86 +73,6 @@ class AIService:
         return cls._instance
     
 
-    async def _check_rca_request(self, user_question: str, persona: str) -> Optional[dict]:
-        """
-        Check if the user's question is requesting RCA information.
-        Returns a response dict if it's an RCA request, None otherwise.
-        
-        Args:
-            user_question (str): The user's input question
-            persona (str): The persona context for the conversation
-        
-        Returns:
-            Optional[dict]: Response dictionary if RCA request is detected, None otherwise
-        """
-
-        self.esp_overall_rca_link="https://docs.google.com/document/d/1Za_VO-Za7nLLBzqAe56Wp05LJpmHvRex/edit?usp=sharing&ouid=113013828525814109060&rtpof=true&sd=true"  # Replace with actual link
-        self.dp_overall_rca_link="https://github.com/"
-        self.fp_overall_rca_link="https://github.com/"
-        self.op_overall_rca_link="https://github.com/"
-        self.inventory_overall_rca_link="https://github.com/"
-        self.forecast_overall_rca_link="https://github.com/"
-        # Convert question to lowercase for case-insensitive matching
-        question_lower = user_question.lower()
-        
-        # Define keyword mappings with their variations and corresponding link variables
-        keyword_mappings = {
-            'esp_overall_rca_link': ['esp', 'enterprise supply planning'],
-            'dp_overall_rca_link': ['dp', 'demand planning'],
-            'fp_overall_rca_link': ['fp', 'factory planning'],
-            'op_overall_rca_link': ['op', 'order promising'],
-            'inventory_overall_rca_link': ['il', 'inventory liquidation'],
-            'forecast_overall_rca_link': ['forecast']
-        }
-        
-        # Check if 'rca' is present in the question
-        if 'rca' not in question_lower:
-            return None
-        
-        # Find the text after 'for' in the question
-        for_index = question_lower.find('for')
-        if for_index == -1:
-            return None
-            
-        # Extract the text after 'for' and clean it
-        target_text = question_lower[for_index + 4:].strip()
-        
-        # Find matching link variable based on the target text
-        matching_link_var = None
-        for link_var, keywords in keyword_mappings.items():
-            if any(keyword in target_text for keyword in keywords):
-                matching_link_var = link_var
-                break
-                
-        if not matching_link_var:
-            return None
-            
-        # Get the actual link from the class variable
-        file_location = getattr(self, matching_link_var)
-        
-        # Calculate response time
-        wait_time = random.uniform(5, 8)
-        start_time = time.time()
-        await asyncio.sleep(wait_time)
-        time_taken = round(time.time() - start_time, 2)
-        
-        prompt_question_object = PromptQuestion
-        next_question = prompt_question_object.get_similar_question(user_question, persona)
-        # Generate response with the appropriate link
-        response_content = (
-            f"I have prepared the RCA report for you.\n"
-          #  f"You can access it here: [RCA Report]({file_location})\n\n"
-            #f"You can access it here: <a href='{file_location}' target='_blank'>RCA Report</a></p>\n\n"
-            f"You can access it here: <a href='{file_location}' target='_blank' style='color: blue; text-decoration: underline; font-weight: bold;'>RCA Report</a></p>"
-            f"Time taken for RCA: {time_taken} seconds"
-        )
-        
-        return {
-            'type': 'text',
-            'content': response_content,
-            'next_question': next_question
-        }
-    
 
     # async def get_ai_response(self, message: str, user_id: str,session_id:str) -> str:
     async def get_ai_response(self, user_message: str, user_id: str, session_id: str, current_user: dict) -> dict:
@@ -160,21 +81,33 @@ class AIService:
             # Grab persona from current_user
         
             persona = current_user.get("persona", None)
-            rca_response = await self._check_rca_request(user_message,persona)
-            if rca_response:
-                return rca_response
+            # rca_response = await self._check_rca_request(user_message,persona)
+            # if rca_response:
+            #     return rca_response
             get_context = GetContext()
             
             context_str = await get_context.get_session_context(session_id, user_id)
 
 
-            response = await asyncio.get_event_loop().run_in_executor(
-                self._executor,
-                self._process_user_message,
-                user_message,
-               context_str,
-                persona    # <--- pass it to the sync method
+            # response = await asyncio.get_event_loop().run_in_executor(
+            #     self._executor,
+            #     self._process_user_message,
+            #     user_message,
+            #    context_str,
+            #     persona    # <--- pass it to the sync method
+            # )
+
+            response = await asyncio.wait_for(
+                asyncio.get_event_loop().run_in_executor(
+                    self._executor,
+                    self._process_user_message,
+                    user_message,
+                    context_str,
+                    persona
+                ),
+                timeout=200  # Seconds before timing out
             )
+            
 
 
 

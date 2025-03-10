@@ -31,24 +31,7 @@ const PlanSummaryModal = ({ isOpen, onClose, onSummaryReceived }) => {
     setShowResults(false);
   };
 
-//   const handleSubmit = async () => {
-//     setIsLoading(true);
-//     try {
-//       const response = await ChatService.createPlanSummary(selectedModule);
-//       const summaryText = response?.summary || 'No data received';
-//       setPlanSummaryData(summaryText);
-//       onSummaryReceived(summaryText);
-//       setShowResults(true);
-//     } catch (error) {
-//       console.error('Error:', error);
-//       alert('Failed to generate summary');
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-
-const handleSubmit = async () => {
+  const handleSubmit = async () => {
     setIsLoading(true);
     try {
       const moduleFiles = {
@@ -82,34 +65,248 @@ const handleSubmit = async () => {
     link.click();
   };
 
-  const formatPlanSummary = (text) => {
+
+
+  const formatMarkdown = (text) => {
     if (!text) return [];
     
-    return text.split(/(?=##\s|###\s)/).map((section, index) => {
-      if (section.startsWith('##') && !section.startsWith('###')) {
-        const [header, ...content] = section.split('\n');
-        return {
-          type: 'h2',
-          header: header.replace('##', '').trim(),
-          content: content.join('\n').trim(),
-          key: `section-${index}`
-        };
-      } else if (section.startsWith('###')) {
-        const [header, ...content] = section.split('\n');
-        return {
-          type: 'h3',
-          header: header.replace('###', '').trim(),
-          content: content.join('\n').trim(),
-          key: `section-${index}`
-        };
+    const components = [];
+    const lines = text.split('\n');
+    const listItemRegex = /^(\s*)(\d+\.|\-|\*)\s+/;
+    let currentContent = [];
+    let tableContent = [];
+    let inTable = false;
+    let inList = false;
+    let listItems = [];
+  
+    lines.forEach((line, index) => {
+
+
+
+      if (listItemRegex.test(line)) {
+        if (!inList) {
+          inList = true;
+          // Flush previous content
+          if (currentContent.length > 0) {
+            components.push({
+              type: 'paragraph',
+              content: currentContent.join('\n'),
+              key: `para-list-${index}`
+            });
+            currentContent = [];
+          }
+        }
+        // Split line into multiple list items if they're concatenated
+        const items = line.split(/(\d+\.\s|\-\s|\*\s)/g)
+          .filter(item => item && !listItemRegex.test(item));
+        
+        listItems.push(...items.filter(item => item.trim()));
+        return;
       }
-      return {
-        type: 'text',
-        content: section.trim(),
-        key: `section-${index}`
-      };
-    }).filter(section => section.content || section.header);
+
+
+
+      // Handle headings (remove # symbols)
+      if (line.startsWith('#')) {
+        // Flush previous content
+        if (currentContent.length > 0) {
+          components.push({
+            type: 'paragraph',
+            content: currentContent.join('\n'),
+            key: `para-${index}`
+          });
+          currentContent = [];
+        }
+        
+        const headingContent = line.replace(/^#+\s*/, '');
+        const headingLevel = Math.min(line.match(/^#+/)[0].length, 4); // Limit to h4 max
+        components.push({
+          type: `h${headingLevel}`,
+          content: headingContent,
+          key: `heading-${index}`
+        });
+        return;
+      }
+  
+      // Handle tables
+      if (line.trim().startsWith('|')) {
+        if (!inTable) {
+          // Flush previous content
+          if (currentContent.length > 0) {
+            components.push({
+              type: 'paragraph',
+              content: currentContent.join('\n'),
+              key: `para-table-${index}`
+            });
+            currentContent = [];
+          }
+          inTable = true;
+        }
+        tableContent.push(line);
+        return;
+      } else if (inTable) {
+        components.push({
+          type: 'table',
+          content: tableContent,
+          key: `table-${index}`
+        });
+        tableContent = [];
+        inTable = false;
+      }
+  
+      // Handle lists
+      if (/^\s*[-*]/.test(line)) {
+        if (!inList) {
+          inList = true;
+          // Flush previous content
+          if (currentContent.length > 0) {
+            components.push({
+              type: 'paragraph',
+              content: currentContent.join('\n'),
+              key: `para-list-${index}`
+            });
+            currentContent = [];
+          }
+        }
+        listItems.push(line.trim());
+        return;
+      } else if (inList) {
+        components.push({
+          type: 'ul',
+          content: listItems,
+          key: `list-${index}`
+        });
+        listItems = [];
+        inList = false;
+      }
+  
+      // Handle regular paragraphs
+      if (line.trim() === '' && currentContent.length > 0) {
+        components.push({
+          type: 'paragraph',
+          content: currentContent.join('\n'),
+          key: `para-${index}`
+        });
+        currentContent = [];
+      } else if (line.trim() !== '') {
+        currentContent.push(line);
+      }
+    });
+  
+    // Flush remaining content
+    if (currentContent.length > 0) {
+      components.push({
+        type: 'paragraph',
+        content: currentContent.join('\n'),
+        key: `para-end`
+      });
+    }
+    if (tableContent.length > 0) {
+      components.push({
+        type: 'table',
+        content: tableContent,
+        key: `table-end`
+      });
+    }
+    if (listItems.length > 0) {
+      components.push({
+        type: 'ul',
+        content: listItems,
+        key: `list-end`
+      });
+    }
+  
+    return components;
   };
+
+  // Function to render a table from markdown table rows
+  const renderTable = (tableRows) => {
+    if (!tableRows || tableRows.length < 2) return null;
+    
+    const headerRow = tableRows[0];
+    const headers = headerRow
+      .split('|')
+      .filter(cell => cell.trim() !== '')
+      .map(cell => cell.trim());
+    
+    const dataRows = tableRows.slice(2).map(row => 
+      row
+        .split('|')
+        .filter(cell => cell.trim() !== '')
+        .map(cell => cell.trim())
+    );
+    
+    return (
+      <div className="overflow-x-auto my-4">
+        <table className="min-w-full border-collapse border border-yellow-500">
+          <thead className="bg-yellow-500">
+            <tr>
+              {headers.map((header, index) => (
+                <th 
+                  key={index} 
+                  className="px-4 py-2 border border-gray-600 text-left font-semibold text-gray-600"
+                >
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {dataRows.map((row, rowIndex) => (
+              <tr 
+                key={rowIndex} 
+                className="hover:transition-colors"
+              >
+                {row.map((cell, cellIndex) => (
+                  <td 
+                    key={cellIndex} 
+                    className="px-4 py-2 border border-gray-500  text-white"
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const renderList = (listItems, isOrdered) => {
+    const ListTag = isOrdered ? 'ol' : 'ul';
+    return (
+      <ListTag className={`${isOrdered ? 'list-decimal' : 'list-disc'} pl-5 my-3 space-y-2`}>
+        {listItems.map((item, index) => {
+          // Split concatenated items
+          const cleanedItem = item.replace(/(\d+\.)(\S)/g, '$1 $2')
+                                 .replace(/(\*|\-)(\S)/g, '$1 $2');
+          
+          return (
+            <li key={index} className="mb-1.5 text-white">
+              {processTextFormatting(cleanedItem)}
+            </li>
+          );
+        })}
+      </ListTag>
+    );
+  };
+
+  const processTextFormatting = (text) => {
+    // Handle bold (**text**)
+    let processedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+    // Handle italic (*text*)
+    processedText = processedText.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    
+    // Handle bold text in headings and lists
+    processedText = processedText.replace(/(^|\s)(\S.*?\S)(\s|$)/g, (match) => {
+      return match.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    });
+  
+    return <span dangerouslySetInnerHTML={{ __html: processedText }} />;
+  };
+
 
   if (!isOpen) return null;
 
@@ -218,31 +415,68 @@ const handleSubmit = async () => {
                     </div>
                   </div>
 
-                  {/* Summary Content */}
-                  <div className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap max-h-[60vh]">
-                  <div className="bg-white dark:bg-gray-600 p-4 rounded-lg shadow-sm">
+                  {/* Summary Content with Custom Rendering */}
+                  <div className="bg-white dark:bg-gray-600 p-6 rounded-lg shadow-sm overflow-y-auto max-h-[60vh]">
                     {planSummaryData ? (
-                      formatPlanSummary(planSummaryData).map(section => (
-                        <div key={section.key} className="mb-4">
-                          {section.type === 'h2' && (
-                            <h2 className="text-xl font-semibold text-yellow-500 mb-2">
-                              {section.header}
-                            </h2>
-                          )}
-                          {section.type === 'h3' && (
-                            <h3 className="text-lg font-medium text-gray-600 dark:text-gray-300 mb-2">
-                              {section.header}
-                            </h3>
-                          )}
-                          <div className={section.type !== 'text' ? 'ml-4' : ''}>
-                            {section.content}
-                          </div>
-                        </div>
-                      ))
+                      <div className="markdown-content">
+                        {formatMarkdown(planSummaryData).map((component) => {
+                          switch (component.type) {
+                            case 'h1':
+                              return (
+                                <h1 key={component.key} className="text-3xl font-bold text-yellow-600 mb-4 mt-6">
+                                  {processTextFormatting(component.content)}
+                                </h1>
+                              );
+                            case 'h2':
+                              return (
+                                <h2 key={component.key} className="text-3xl font-semibold text-yellow-600 mb-3 mt-5">
+                                  {processTextFormatting(component.content)}
+                                </h2>
+                              );
+                            case 'h3':
+                              return (
+                                <h3 key={component.key} className="text-lg font-medium text-yellow-500 mb-2 mt-4">
+                                  {processTextFormatting(component.content)}
+                                </h3>
+                              );
+                            case 'h4':
+                              return (
+                                <h4 key={component.key} className="text-lg font-medium text-white-600 dark:text-yellow-500 mb-2 mt-3">
+                                  {processTextFormatting(component.content)}
+                                </h4>
+                              );
+                            case 'paragraph':
+                              return (
+                                <p key={component.key} className="mb-3 text-white dark:text-white">
+                                  {processTextFormatting(component.content)}
+                                </p>
+                              );
+                            case 'table':
+                              return (
+                                <div key={component.key}>
+                                  {renderTable(component.content)}
+                                </div>
+                              );
+                            case 'ul':
+                              return (
+                                <div key={component.key}>
+                                  {renderList(component.content, false)}
+                                </div>
+                              );
+                            case 'ol':
+                              return (
+                                <div key={component.key}>
+                                  {renderList(component.content, true)}
+                                </div>
+                              );
+                            default:
+                              return null;
+                          }
+                        })}
+                      </div>
                     ) : (
                       <p className="text-gray-500">No data available</p>
                     )}
-                  </div>
                   </div>
                 </div>
               </div>
@@ -257,7 +491,7 @@ const handleSubmit = async () => {
                 disabled={isLoading || !selectedModule}
                 className="px-6 py-3 bg-yellow-500 text-black rounded-lg hover:bg-yellow-600 disabled:opacity-50 transition-all"
               >
-                {isLoading ? 'Processing...' : 'Generate Summary'}
+                {isLoading ? 'Processing...' : 'Run Agent'}
               </button>
             ) : (
               <>

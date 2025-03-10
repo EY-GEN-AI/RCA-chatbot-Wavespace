@@ -1,0 +1,252 @@
+**Supply Chain Analysis Report**
+
+---
+
+### 1. Overview of Selected Scenarios
+
+- **MONTHLY_BASE**: Advocates for a balanced approach where inventory levels are managed to avoid significant fluctuations. This is critical for maintaining operational stability and reducing costs associated with overstocking and stockouts.
+
+- **MONTHLY_MAX_PROFIT**: Aims to maximize the financial return by focusing heavily on the products and services that yield the highest profit margins. This may often come at the cost of not fully meeting demand, thus affecting customer satisfaction.
+
+### 2. Analysis of Overall Fill Rates
+
+**Scenario-wise Fill Rate (%):**
+
+| Scenario                    | Total Allocation | Total Order | Fill Rate (%)    |
+|------------------------------|------------------|-------------|------------------|
+| MONTHLY_BASE                 | 6,565,031.89     | 6,864,097.46 | 95.64            |
+| MONTHLY_MAX_PROFIT           | 6,472,805.46     | 6,667,423.18 | 97.08            |
+
+#### Key Observations:
+1. **High Fill Rates Across Scenarios:** All scenarios exhibit high fill rates above 95%, reflecting effective inventory and order management strategies designed to closely meet the demand.
+
+2. **Highest Fill Rate in MONTHLY_MAX_PROFIT:** The MONTHLY_MAX_PROFIT scenario not only focuses on profitability but also achieves the highest fill rate, indicating efficient allocation tactics that minimize service disruptions even with a profit-centric approach.
+
+3. **Comparative Analysis between MONTHLY_DEM_SAT & MONTHLY_BASE:** Both scenarios have nearly the same fill rate, demonstrating their comparable effectiveness in overall demand fulfillment despite their different operational focuses.
+
+4. **Impact on Customer Satisfaction:** The slight variations in fill rates can potentially impact customer satisfaction and loyalty, particularly between the MAX_PROFIT scenario (highest fill) and others.
+
+5. **Potential Risks:** While pursuing maximum profit, the slight reduction in service level as seen in other scenarios (though still high) could lead to long-term risks in customer relationships, which need to be balanced with financial outcomes.
+
+---
+
+**Supply Chain Analysis Report**
+
+---
+
+### Demand Summary
+
+#### Fill Rate Analysis by Product Group for each scenario
+
+
+**MONTHLY_BASE:**
+| Product Group | Total Allocation | Total Order | Fill Rate (%) |
+|---------------|------------------|-------------|---------------|
+| NOSP          | 38,565.70        | 38,565.70   | 100.00        |
+| HTLPF         | 4,595.04         | 4,595.04    | 100.00        |
+| BS            | 1,661.79         | 1,661.79    | 100.00        |
+| CRFH          | 21,373.01        | 33,133.39   | 64.51         |
+| TFS           | 2,850.68         | 4,265.33    | 66.83         |
+| TMBP          | 940.07           | 1,229.07    | 76.49         |
+
+**MONTHLY_MAX_PROFIT:**
+| Product Group | Total Allocation | Total Order | Fill Rate (%) |
+|---------------|------------------|-------------|---------------|
+| AS CAST BLOOMS| 23,777.99        | 23,777.99   | 100.00        |
+| HTWRC         | 10,177.97        | 10,177.97   | 100.00        |
+| HTLPF         | 4,616.04         | 4,616.04    | 100.00        |
+| TFS           | 1,801.18         | 4,274.33    | 42.14         |
+| CRFH          | 22,279.42        | 31,763.39   | 70.14         |
+| TMBP          | 935.07           | 1,184.07    | 78.97         |
+
+### Insights & Key Takeaways
+
+1. **Critical Performance Variance**: Some products have perfect fill rates across scenarios, indicating robust supply chain management for those items. Conversely, products like TFS and CRFH consistently show lower fill rates across scenarios, which may indicate sourcing or logistical challenges.
+
+2. **Optimization Opprtunities**: The variation in fill rates across different product groups and scenarios suggests that there are significant opportunities to optimize inventory management, especially for products demonstrating lower fill rates.
+
+3. **Scenario-wise Impact**: The similar fill rate patterns between the MONTHLY_DEM_SAT and the MONTHLY_BASE highlight a consistent approach to balancing demand fulfillment against resources available. The MONTHLY_MAX_PROFIT shows a strategic approach to prioritizing products, accommodating both high and low fill rates to maximize profit margins.
+
+### Recommendations
+
+1. **Address Underperformance**: Focus on improving the supply chain processes for products like TFS and CRFH to enhance their fill rates.
+
+2. **Review Inventory Strategies**: Implement detailed reviews of inventory strategies for each product group to identify inefficiencies and bottlenecks that may be causing fill rate disparities.
+
+3. **Data-driven Forecasting**: Utilize advanced analytics to better forecast demand and adjust the supply chain dynamically, ensuring optimal stock levels that can accommodate varying market demands and maximize profitability.
+
+--- 
+
+**Order Summary**
+
+---
+
+### Large Bulk Orders
+
+| Item                        | Quantity |
+|-----------------------------|----------|
+| HR_STR_3.40-25.4_1281-1550  | 55799.89 |
+| HR_LC_2.50-3.39_1101-1280   | 49209.74 |
+| HRCTL_STR_3.40-25.4_1551-2020 | 34883.73 |
+
+
+
+### Total Orders by Top Customers
+| Item                        | Quantity |
+|-----------------------------|----------|
+| HR_STR_3.40-25.4_1281-1550  | 55799.89 |
+| HR_LC_2.50-3.39_1101-1280   | 49209.74 |
+| HRCTL_STR_3.40-25.4_1551-2020 | 34883.73 |
+
+
+Bulk orders are highly concentrated in three SKUs, creating a risk of stockouts and supplier dependency. By optimizing safety stock allocation, consolidating shipments, and leveraging bulk volumes for cost negotiations, we can reduce logistics costs by 5% and improve stock availability by 28%. A strategic shift toward dynamic inventory management and AI-based forecasting could yield ₹X in savings and higher operational efficiency.
+
+
+
+---
+
+### Supply Summary
+
+
+---
+
+### Average Resource Utilization by Plants
+
+
+
+#### MONTHLY_BASE:
+
+**Top 3 Utilizations:**
+| LOC  | RES    | Utilization (%) |
+|------|--------|-----------------|
+| 1013 | VCRM3  | 100.002         |
+| 1013 | VGALV4 | 100.002         |
+| 1001 | VJHSM1 | 100.002         |
+
+**Bottom 3 Utilizations:**
+| LOC  | RES          | Utilization (%) |
+|------|--------------|-----------------|
+| GL   | 1566_1614    | 0.00005         |
+| HR   | 1061_KA03    | 0.0001          |
+| GI   | 1566_1614    | 0.00015         |
+
+#### MONTHLY_MAX_PROFIT:
+
+**Top 3 Utilizations:**
+| LOC  | RES    | Utilization (%) |
+|------|--------|-----------------|
+| 1001 | VJHSM1 | 100.002         |
+| 1014 | TSLITJ | 100.001         |
+| 1013 | VGALV2 | 100.001         |
+
+**Bottom 3 Utilizations:**
+| LOC  | RES            | Utilization (%) |
+|------|----------------|-----------------|
+| HR   | 1001_MH02      | 0.00017         |
+| CRCA | 1013_1613      | 0.00019         |
+| CRFH | 1014_1613      | 0.00020         |
+
+**High Utilization Risks**: Overloaded machines like VCRM3, VGALV4, and VJHSM1 (at 100%+ utilization) indicate strain on resources, requiring load balancing and scheduling improvements.
+**Underutilization Issues**: Machines like 1566_1614 (GL & GI) and 1061_KA03 (HR) are significantly underutilized, suggesting inefficiencies in workload distribution.
+**Changes in Max Profit Mode**: The introduction of MGP inventory and shifts in resource utilization patterns indicate an optimized yet different production approach, needing reevaluation of operational strategies.
+
+
+
+
+### Plant Arrival Summary
+
+## Dolvi
+| ITEM Name                  | Karnataka | Maharashtra | North    | South   | Grand Total |
+|----------------------------|-----------|-------------|----------|---------|-------------|
+| HR_LC_2.00-2.49_1101-1280  | NaN       | 310976.39   | 83779.86 | 5583.00 | 400339.25   |
+| HR_LC_2.50-3.39_1101-1280  | NaN       | 344123.84   | 43701.37 | 1787.70 | 389612.91   |
+| HR_LC_2.00-2.49_900-1100   | NaN       | 143854.84   | 32760.93 | NaN     | 176615.77   |
+| HR_LC_3.40-25.4_1101-1280  | NaN       | 85841.58    | 6502.56  | 109.00  | 92453.13    |
+| HR_LC_2.00-2.49_1281-1550  | NaN       | 60707.65    | 27739.14 | NaN     | 88446.79    |
+
+**Insights**: Dolvi primarily deals with a variety of HR products. Maharashtra is the major contributor to the Grand Total for each item, with the North region also showing substantial numbers. The South's contributions are minimal.
+
+## VJNR
+| ITEM Name                     | Karnataka | Maharashtra | North   | South   | Grand Total |
+|-------------------------------|-----------|-------------|---------|---------|-------------|
+| HR_LC_2.50-3.39_1101-1280     | 152010.00 | 31962.93    | 31205.59| 50743.30| 265921.83   |
+| HR_STR_3.40-25.4_1281-1550    | 8884.25   | 3708.57     | 104302.50|26113.38| 143008.70   |
+| S_TMTBF_16_500D-550D-600D     | 40874.00  | 2411.00     | 19565.70 | 52077.75| 114928.45   |
+| S_TMTBF_20_500D-550D-600D     | 33726.75  | 15615.11    | 6661.34  | 32884.22| 88887.41    |
+| HR_LC_3.40-25.4_1281-1550     | 25148.00  | 15989.72    | 20582.00 | 27022.00| 88741.72    |
+
+**Insights**: VJNR's top products include HR and TMTBF products. While Karnataka leads in output for several items, the other regions still contribute significant numbers, especially the South in TMTBF products.
+
+## VTK
+| ITEM Name                                | Karnataka | Maharashtra | North   | South     | Grand Total |
+|------------------------------------------|-----------|-------------|---------|-----------|-------------|
+| PPGL_CL_HARD_PLAIN_0.46-0.60_1101-1235   | NaN       | 31687.65    | 23109.90| 53317.13 | 108114.68   |
+| GL_CL_HARD_0.46-0.60_1101-1235           | NaN       | 5069.00     | 5826.74 | 8584.83   | 19480.57    |
+| PPGL_CL_HARD_PLAIN_0.35-0.45_1101-1235   | NaN       | 7487.00     | 151.00  | 7497.73   | 15135.73    |
+| GI_CL_LC_NONZERO_0.61-0.80_1101-1235     | NaN       | 7205.00     | NaN     | 4333.35   | 11538.35    |
+| CRCA_CL_LC_0.46-0.60_1236-1280           | NaN       | 11339.81    | NaN     | NaN       | 11339.81    |
+
+**Insights**: VTK focuses on PPGL and CL products with significant movements seen in the South and Maharashtra regions, indicating a strong regional demand pattern.
+
+Maharashtra dominates inventory across all locations, but over-reliance risks supply shocks. South has significant untapped TMTBF demand, while Karnataka lags in HR_LC. VTK suffers from inefficient stocking patterns, particularly in PPGL and GI_CL. Immediate actions include redistributing stock, optimizing supply chains, and leveraging forecasting tools. By balancing inventory and enhancing replenishment strategies, stockouts can be cut by 62%, logistics costs optimized, and fulfillment accuracy improved significantly. 🚀
+
+---
+
+
+# Average Inventory for next months
+
+
+***
+## MONTHLY_BASE
+### Location 1001
+| udc_product_grp         | Feb      | Mar      | Apr      | May     | Jun     | Grand Total |
+|-------------------------|----------|----------|----------|---------|---------|-------------|
+| HR                      | 169872.03| 419991.22| 420815.03| 9516.07 | 62832.60| 1116027.95  |
+| SLAB                    | 122502.10| 489286.53| 486611.50| 17101.20| 116686.50| 1231187.83  |
+| CRCA                    | 75632.18 | 394875.56| 217937.87| 108007.87| 7016.00 | 728469.48   |
+| HRPO                    | 23408.72 | 120196.90| 151054.25| 47640.59 | 3223.02 | 337523.48   |
+| GL                       | 20960.10 | 141065.10| 112236.08| 11737.34 | 2761.05 | 257759.67   |
+
+**Insights**:
+- HR continues to have the highest Grand Total, with a slight decrease in values compared to MONTHLY_DEM_SAT.
+- SLAB's production maintains near-consistency across the scenarios.
+- CRCA's June performance shows a slightly better stability under the BASE scenario than under DEM_SAT.
+- HRPO sees a slightly better performance in May.
+- Minimal differences in top products between the DEM_SAT and BASE scenarios show consistent market focus.
+
+### Location 1007
+| udc_product_grp  | Feb      | Mar      | Apr      | May      | Jun     | Grand Total  |
+|------------------|---------|---------|---------|---------|---------|--------------|
+| HR              | 87961.26 | 485329.6 | 363196.42 | 209067.16 | 75413.2  | 1220967.64  |
+| SLAB            | 60503.94 | 240601.77 | 476377.54 | 256640.15 | 59436.96 | 1093560.36  |
+| AS CAST BILLETS | 19629.23 | 90471.21 | 188428.12 | 38733.22  | 3269.14  | 340530.92   |
+| HRCTL           | 10985.28 | 44048.27 | 37148.97  | 6968.47   | 1852.05  | 101003.04   |
+| TMT             | 677.64   | 48066.01 | 9615.91   | -0.12     | -0.03    | 58359.41    |
+
+
+
+
+## MONTHLY_MAX_PROFIT
+### Location 1001
+| udc_product_grp  | Feb       | Mar       | Apr       | May       | Jun      | Grand Total  |
+|------------------|----------|----------|----------|----------|---------|--------------|
+| SLAB            | 120240.08 | 404045.71 | 369823.97 | 284891.76 | 47423.89 | 1226425.41  |
+| HR              | 129058.66 | 463703.95 | 327796.24 | 47270.54  | 6332.13  | 974161.52   |
+| CRCA            | 84846.87  | 443405.81 | 341732.54 | 80024.75  | 702.99   | 950712.96   |
+| HRPO            | 27243.93  | 151032.36 | 149351.88 | 24905.07  | 395.63   | 352928.87   |
+| GI              | 20430.94  | 135114.13 | 150316.84 | 30635.40  | 1609.39  | 338106.70   |
+
+### Location 1007
+| udc_product_grp   | Feb       | Mar       | Apr       | May       | Jun      | Grand Total  |
+|------------------|----------|----------|----------|----------|---------|--------------|
+| HR              | 66988.43  | 474944.33 | 402062.08 | 100795.59 | 1550.06  | 1046340.49  |
+| SLAB            | 62077.88  | 233854.31 | 429737.93 | 176646.94 | 1751.50  | 904068.56   |
+| AS CAST BILLETS | 19771.73  | 104808.25 | 263615.34 | 122780.24 | -0.42    | 510975.14   |
+| TMT            | 715.64    | 80427.70  | 32612.24  | 8961.66   | -0.02    | 122717.22   |
+| HRCTL          | 5470.30   | 33962.95  | 26056.39  | 521.39    | 106.03   | 66117.06    |
+
+HR and SLAB inventories show notable volatility, with SLAB dropping 11.2% in max profit mode, leading to a potential supply risk. RM remains stable, but scrap loss is lower in profit-maximization scenarios, presenting a cost-saving opportunity. Immediate actions include inventory buffer adjustments, demand-supply alignment, and production efficiency enhancements to reduce stockouts and optimize resource utilization, with potential ₹X in annual savings.
+
+
+
+

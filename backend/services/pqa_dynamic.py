@@ -329,7 +329,7 @@ async def generate_plan_summary_3(name_list): #(Large Bulk orders, Total order b
                         Group by ITEM take SUM on QTY where DMDTYPE=1, report top 3 item with qty in TABULAR FORMAT
 
                     b. Total Orders by Top Customers
-                        Group by ITEM take SUM on QTY where DMDTYPE=1, report top 3 customers, item with qty in tabular format
+                        Group by CUST,ITEM take SUM on QTY where DMDTYPE=1, report top 3 customers, item with qty in tabular format
                         Report top 3 Customer names, item with qty in TABULAR FORMAT
 
 
